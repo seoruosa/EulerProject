@@ -1,9 +1,8 @@
-N = 10
+N = 20
 
-SCDlist = []
-for i in range(1,N+1):
-	SCDlist += [i]
 
+
+#Calculate all the primes smaller than N
 n = 3
 primes=[2]
 while n <= N:
@@ -14,8 +13,12 @@ while n <= N:
 		primes.append(n)
 	n += 2
 
-SCD=[]
-for prime in primes:
-	SCD.append(prime)
+LCM = 1 #initialize the least common multiple
+for n in range(1, N+1):
+	if LCM%n != 0:
+		for prime in primes:
+			if (LCM*prime)%n == 0:
+				LCM *= prime
+				break
 
-print(SCD)
+print(LCM)
