@@ -4,7 +4,8 @@ NUM = 600851475143
 FileName = 'listOfPrimes.txt'
 # Program that prints primes smaller than MAX
 
-MAX = int(NUM**0.5)
+# MAX = int(NUM**0.5)
+MAX = 2000000
 
 primes = []
 if os.path.isfile(FileName):
@@ -43,5 +44,6 @@ for prime in primes:
 with open(FileName,'w') as f:
 	for prime in primes:
 		f.write(str(prime)+'\n')
+		print(prime)
 
 print('The largest prime factor is: ' + str(lpf))
