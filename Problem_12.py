@@ -6,7 +6,7 @@ def triangle_numbers(n):
     return sum([i for i in range(1, n+1)])
 
 def divisors(n):
-    LIMIT = int(n**0.5)
+    LIMIT = int(n**0.5)+1
     l = set()
     for i in range(1,LIMIT):
         if n%i==0:
