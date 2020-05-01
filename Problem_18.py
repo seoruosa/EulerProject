@@ -15,6 +15,14 @@ TRIANGLE = """75
 04 62 98 27 23 09 70 98 73 93 38 53 60 04 23
 """
 
+with open("p067_triangle.txt", 'r') as f:
+    TRIANGLE = f.read()
+# linha 4, el 18
+# pos da seq, 
+# 0
+# 1, max of (children + max of children)
+# 2, max of children
+# 3, 18
 # https://www.codementor.io/@leandrotk100/everything-you-need-to-know-about-tree-data-structures-pynnlkyud
 
 
@@ -70,7 +78,8 @@ class TriangleTree:
             right_parent.configureChildren(left=self.tree[i][j])
     
     def configChildrenOfAllNodes(self):
-        for i in range(0, len(self.tree)):
+        # for i in range(0, len(self.tree)):
+        for i in range(len(self.tree)-1, -1, -1):
             for j in range(0, len(self.tree[i])):
                 left, right = self.parents(i, j)
                 if left != None:
@@ -78,7 +87,12 @@ class TriangleTree:
                 if right != None:
                     right.configureChildren(left=self.tree[i][j])
 
-    
+    def maxSumOfAllNodes(self):
+        for i in range(len(self.tree)-2, -1, -1):
+            for j in range(0, len(self.tree[i])):
+                for k in range(len(self.children(i,j)[0].sumList)):
+                    self.tree[i][j].sumList.append(self.tree[i][j].data + max(self.children(i,j)[0].sumList[k], self.children(i,j)[1].sumList[k]))
+
     def height(self):
         return len(self.tree)
 
@@ -92,7 +106,9 @@ class TriangleTree:
             return None
 
     def parents(self, i, j):
-        if j==0:
+        if i==0:
+            return (None, None)
+        elif j==0:
             return (None, self.tree[i-1][j])
         elif j== self.width(i,j)-1:
             return (self.tree[i-1][-1], None)
@@ -109,20 +125,16 @@ class TriangleTree:
 def main():
     tree = TriangleTree(TRIANGLE)
     tree.configChildrenOfAllNodes()
+    tree.maxSumOfAllNodes()
 
-    for i in range(tree.height()):
+
+
+    for i in range(tree.height()-1):
         for j in range(tree.width(i)):
-            print(tree.node_value(i, j), end=' ')
-        print('')
+            print("{} -- {} {} {}".format(tree.node_value(i,j), *tree.children(i,j), tree.node_value(i,j).sumList))
+    
+    print(f"The maximum total is {max(tree.node_value(0,0).sumList)}")
 
-    i = tree.height()-2
-    for j in range(tree.width(i)):
-        try:
-            print(f"{tree.node_value(i,j)} -> {tree.parents(i,j)[0]}, {tree.parents(i,j)[1]}")
-        except:
-            print(f"{tree.node_value(i,j)}")
-        # except:
-        #     (f"{tree.parents(i,j)}")
 
     tree.close()
 
